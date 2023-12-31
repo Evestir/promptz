@@ -1,34 +1,18 @@
-import { PrismaClient } from "@prisma/client"
-import { error } from "console"
-import * as z from "zod"
-
-interface postData {
-    url: string[];
-    title: string;
-    posPrompt: string;
-    negPrompt: string;
-}
-
-const prisma = new PrismaClient()
-
-export async function uploadPost(params: postData) {
-    await prisma.post.create({
-        data: {
-          url: params.url,
-          title: params.title,
-          posPrompt: params.posPrompt,
-          negPrompt: params.negPrompt,
-        },
+export async function upload2Api(params: any) {
+    await fetch('/api/upload', {
+        method: 'POST',
+        body: JSON.stringify(params),
     })
 }
 
-function getBase64(file: File): Promise<string | ArrayBuffer | null> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = error => reject(error)
+export async function downloadPosts(params: any) {
+    const response = await fetch('/api/download', {
+        method: 'POST',
+        body: JSON.stringify(params),
     })
+
+    const body = await response.json()
+    return body
 }
 
 export async function upload2Imgur(params: File) {

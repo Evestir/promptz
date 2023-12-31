@@ -2,17 +2,18 @@ import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { GetStaticProps } from 'next'
 import { PrismaClient } from '@prisma/client'
-import PostCard from '@/components/ui/postCard'
+import PostBoard from '@/components/ui/postBoard'
 import PostForm from '@/components/ui/postForm'
+import axios from 'axios'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <PostForm/>
+    <main className="flex min-h-screen flex-col items-center justify-between p-0">
+      <div className='lg:w-1/2 sm:w-full pt-8'>
+        <PostForm />
       </div>
       <div>
-        {PostCard()}  
+        <PostBoard />
       </div>    
     </main>
   )
