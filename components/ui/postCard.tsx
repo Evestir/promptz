@@ -22,6 +22,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { Label } from "./label"
 
 interface postDataSchema {
     id: string;
@@ -47,39 +48,34 @@ const Copy2Clipboard = async (text: string) => {
 
 const PostCard = (postData: postDataSchema) => {
     return (
-        <Card className="w-[350px] sm:w-max md:w-max">
-            <CardContent className="pt-6">
-                <Carousel className="w-full">
-                    <CarouselContent>
-                        {postData.url.map((imageSRC, index) => (
-                            <CarouselItem key={index}>
-                                <div className="flex relative aspect-square items-center justify-center">
-                                    <Image className="rounded-xl border-stone-750 border-2" src={imageSRC} fill={true} alt=""/>
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
-            </CardContent>
-            <CardHeader className="pt-0">
-                <CardTitle>{postData.title}</CardTitle>
-                <CardDescription>{postData.createdAt}</CardDescription>
-                <CardFooter>
+        <div className="border border-stone-700 rounded-md lg:w-[350px] sm:w-max md:w-max justify-center items-center">
+            <Carousel className="w-full p-0 items-center justify-center">
+                {postData.url.map((imageSRC, index) => (
+                    <CarouselItem className="w-full h-full p-0" key={index}>
+                        <div className="flex items-center justify-center">
+                            <Image className="w-full block h-full rounded-md" src={imageSRC} objectFit="contain" layout="cover" sizes="100vw" width={350} height={0} alt=""/>
+                        </div>
+                    </CarouselItem>
+                ))}
+                <div className="absolute bottom-0 left-0 right-0 flex bg-gradient-to-b rounded-md 
+                from-transparent to-stone-900 flex-col justify-center items-start p-4 align-top">
+                    <Label className="font-bold text-xl">{postData.title}</Label>
+                    <Label className="py-2">{postData.createdAt}</Label>
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button className="bg-indigo-600 text-gray-200">Copy</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
+                    <DropdownMenuTrigger asChild>
+                        <Button className="bg-indigo-600 text-gray-200">Copy</Button>
+                    </DropdownMenuTrigger>
+                        <DropdownMenuContent className="">
                             <DropdownMenuItem onClick={() => {Copy2Clipboard(postData.posPrompt)}}>Copy Positive Prompt</DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => {Copy2Clipboard(postData.negPrompt)}}>Copy Negative Prompt</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                </CardFooter>
-            </CardHeader>
-        </Card>
+                </div>
+                <CarouselPrevious className="m-0" />
+                <CarouselNext className="m-0" />
+            </Carousel>
+        </div>
     )
 }
 

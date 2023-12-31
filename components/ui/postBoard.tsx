@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import PostCard from "./postCard";
 import { downloadPosts } from "@/app/libs/data";
+import { pages } from "next/dist/build/templates/app-page";
 
 interface postDataSchema {
     id: string;
@@ -34,34 +35,41 @@ const PostBoard = () => {
         setIsLoading(false)
     }
 
+    const observerTarget = useRef(null);
+
+    useEffect(() => {
+        loadMorePosts()
+    }, [])
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             entries => {
-              if (entries.some(entry => entry.isIntersecting)) {
+              if (entries[0].isIntersecting) {
                 loadMorePosts()
-                setPage(prevPage => prevPage + 1);
               }
             },
             {
-              root: null,
-              rootMargin: '0px',
               threshold: 1.0,
             }
         );
-        const target = document.getElementById('load-more-trigger');
-        if (target) observer.observe(target);
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
     
         return () => {
-        if (target) observer.unobserve(target);
+        if (observerTarget.current) observer.unobserve(observerTarget.current);
         };
-    }, [page])
+    }, [observerTarget])
 
     return (
-        <div>
+        <div className="flex items-stretch">
             {posts.map(post => {
-             return <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt}/>
+             return <div className="m-6">
+                <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt}/>
+                </div>
             })}
-            <div id="load-more-trigger" />
+            <div ref={observerTarget}></div>
         </div>
     )
 }
