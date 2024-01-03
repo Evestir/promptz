@@ -9,10 +9,7 @@ import axios from 'axios'
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-0">
-      <div className='lg:w-1/2 sm:w-full pt-8'>
-        <PostForm />
-      </div>
-      <div>
+      <div className='mt-20'>
         <PostBoard />
       </div>    
     </main>

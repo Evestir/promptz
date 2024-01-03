@@ -48,7 +48,7 @@ const Copy2Clipboard = async (text: string) => {
 
 const PostCard = (postData: postDataSchema) => {
     return (
-        <div className="border border-stone-700 rounded-md lg:w-[350px] sm:w-max md:w-max justify-center items-center">
+        <div className="border border-stone-700 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
             <Carousel className="w-full p-0 items-center justify-center">
                 {postData.url.map((imageSRC, index) => (
                     <CarouselItem className="w-full h-full p-0" key={index}>
@@ -72,8 +72,8 @@ const PostCard = (postData: postDataSchema) => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <CarouselPrevious className="m-0" />
-                <CarouselNext className="m-0" />
+                <CarouselPrevious className="left-2 opacity-0 hover:opacity-100 transition-all" />
+                <CarouselNext className="right-2 opacity-0 hover:opacity-100 transition-all" />
             </Carousel>
         </div>
     )

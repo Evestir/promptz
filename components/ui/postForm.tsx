@@ -12,6 +12,7 @@ import { Label } from "@radix-ui/react-label"
 import { Card } from "./card"
 import { Space } from "lucide-react"
 import { UploadIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner"
 
 interface postDataSchema {
     url: string[];
@@ -52,6 +53,13 @@ const PostForm = () => {
         urlStrings.push(url)
 
         setIsLoading(false)
+        toast("Your post has been submitted successfully!", {
+            description: "Sunday, December 03, 2023 at 9:00 AM",
+            action: {
+              label: "Thanks!",
+              onClick: () => alert("You can donate always!"),
+            },
+        })
     }
 
     const handleSubmit = async (values: z.infer<typeof formSchema>) => {
