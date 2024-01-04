@@ -65,8 +65,8 @@ const PostBoard = () => {
     return (
         <div className="grid grid-cols-5 gap-4">
             {posts.map(post => {
-             return <div className="m-0">
-                <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt}/>
+             return <div key={post.id} className="m-0">
+                    <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt}/>
                 </div>
             })}
             <div ref={observerTarget}></div>

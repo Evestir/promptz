@@ -38,14 +38,14 @@ const NavBar = () => {
                     <Label className="font-bold text-2xl">romptz</Label>
                 </div>
                 <AlertDialog>
-                <NavigationMenu className=" justify-end">
+                <NavigationMenu className="mr-28 justify-end">
                     <NavigationMenuList>
                         <NavigationMenuItem>
                             <NavigationMenuTrigger>Post</NavigationMenuTrigger>
                             <NavigationMenuContent className="p-4">
-                                <div className=" w-[300px]">
+                                <div className=" w-[240px]">
                                     <AlertDialogTrigger asChild>
-                                        <Button className="bg-gradient-to-b h-[200px] focus:shadow-md flex w-full from-zinc-900 opacity-55 to-zinc-800 text-gray-50 font-medium text-lg">Click here to post your Image!</Button>
+                                        <Button className="bg-gradient-to-b h-[200px] focus:shadow-md flex w-full from-zinc-900 opacity-55 to-zinc-800 text-gray-50 font-medium text-lg">Click here to post!</Button>
                                     </AlertDialogTrigger>
                                 </div>
                             </NavigationMenuContent>
@@ -53,7 +53,7 @@ const NavBar = () => {
                         <NavigationMenuItem>
                             <NavigationMenuTrigger>About</NavigationMenuTrigger>
                             <NavigationMenuContent className="p-4">
-                                <div className="w-[300px] flex-col gap-3">
+                                <div className="w-[240px] flex-col gap-3">
                                     <p className="text-sm leading-tight text-muted-foreground">
                                         Beautifully designed webpage built with Radix UI and Tailwind CSS for the purpose of sharing Stable Diffusion Prompts
                                     </p>
@@ -61,7 +61,7 @@ const NavBar = () => {
                                         <p className="mt-4 text-xs leading-tight text-muted-foreground">
                                             Developed By Vestir
                                         </p>
-                                        <div>
+                                        <div className="right-0 bottom-0">
                                             <FaGithub />
                                         </div>
                                     </div>
