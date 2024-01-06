@@ -18,21 +18,14 @@ export async function downloadPosts(params: any) {
 export async function upload2Imgur(params: File) {
     try {
         console.log(params.name)
-        //let base64Img = await getBase64(params);
-        const parm = new FormData();
-        parm.append('image', params)
-        /*if (typeof base64Img == 'string') {
-            base64Img = base64Img.replace(/^data:.+base64,/, '')
-            parm.append('image', base64Img)
-            parm.append('type', 'base64')
-        }*/
-
+        const form = new FormData();
+        form.append('image', params)
         const response = await fetch('https://api.imgur.com/3/image', {
             method: 'POST',
             headers: {
                 Authorization: 'Client-ID 3323c16a5b7b123',
             },
-            body: parm,
+            body: form,
         })
 
         if (response.ok) {

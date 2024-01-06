@@ -63,7 +63,7 @@ const PostBoard = () => {
     }, [observerTarget])
 
     return (
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-5 grid-flow-row gap-4">
             {posts.map(post => {
              return <div key={post.id} className="m-0">
                     <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt}/>

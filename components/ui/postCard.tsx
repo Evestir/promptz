@@ -23,6 +23,8 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { Label } from "./label"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog"
+import { Input } from "./input"
 
 interface postDataSchema {
     id: string;
@@ -48,6 +50,8 @@ const Copy2Clipboard = async (text: string) => {
 
 const PostCard = (postData: postDataSchema) => {
     return (
+        <Dialog>
+        <DialogTrigger asChild>
         <div className="border border-stone-700 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
             <Carousel className="w-full p-0 items-center justify-center">
                 {postData.url.map((imageSRC, index) => (
@@ -76,6 +80,40 @@ const PostCard = (postData: postDataSchema) => {
                 <CarouselNext className="right-2 opacity-0 hover:opacity-100 transition-all" />
             </Carousel>
         </div>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+                <DialogTitle>{postData.title}</DialogTitle>
+            <DialogDescription>
+            <Carousel className="w-full p-0 items-center justify-center">
+                {postData.url.map((imageSRC, index) => (
+                    <CarouselItem className="w-full h-full p-0" key={index}>
+                        <div className="flex items-center justify-center">
+                            <Image className="w-full block h-full rounded-md" src={imageSRC} objectFit="contain" layout="cover" sizes="100vw" width={350} height={0} alt=""/>
+                        </div>
+                    </CarouselItem>
+                ))}
+                <CarouselPrevious className="left-0 h-full opacity-0 rounded-none hover:opacity-100 transition-all" />
+                <CarouselNext className="right-0 h-full opacity-0 rounded-none hover:opacity-100 transition-all" />
+            </Carousel>
+            </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+                <div className="rounded-md border-stone-700 border p-2">
+                    <p className="text-sm font-light">{postData.posPrompt}</p>
+                </div>
+                <div className="rounded-md border-stone-700 border p-2">
+                    <p className="text-sm font-light">{postData.negPrompt}</p>
+                </div>
+            </div>
+            <DialogFooter>
+                <div className="w-full flex justify-between">
+                    <Button className="flex w-full rounded-r-none bg-violet-300" >Copy Positive</Button>
+                    <Button className="w-full rounded-l-none bg-rose-300" >Copy Negative</Button>
+                </div>
+            </DialogFooter>
+        </DialogContent>
+        </Dialog>
     )
 }
 
