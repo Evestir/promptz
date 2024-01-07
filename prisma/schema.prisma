@@ -16,6 +16,9 @@ model Post {
   title String
   posPrompt String
   negPrompt String
+  model String
+  sampler String
+  sdVersion String
   view Int? @default(0)
   createdAt DateTime @default(now())
 }

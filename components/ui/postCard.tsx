@@ -1,118 +1,167 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
 import { Label } from "./label"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog"
-import { Input } from "./input"
+import { postDataSchema } from "@/app/libs/interfaces"
+import { FaTrash } from "react-icons/fa"
+import { deletePost } from "@/app/libs/data"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./alert-dialog"
+import { redirect } from "next/navigation"
+import { toast } from "sonner"
+import { ScrollArea } from "./scroll-area"
+import Grid from '@mui/material/Grid'
 
-interface postDataSchema {
-    id: string;
-    url: string[];
-    title: string;
-    posPrompt: string;
-    negPrompt: string;
-    view: number;
-    createdAt: any;
-}
+const delPost = async (e:any) => {
+    const postData = {
+        id: e.target.id
+    }
 
-const Copy2Clipboard = async (text: string) => {
-    try {
-        if (!navigator.clipboard) {
-            throw new Error("Your browser doesn't support clipboard functions!")
-        }
+    const deletedPost = await deletePost(postData)
+    console.log(deletedPost)
 
-        await navigator.clipboard.writeText(text)
-    } catch (e) {
-        console.log(e)
+    if (deletedPost.message === "Successfully deleted an item.") {
+        redirect("/")
     }
 }
 
 const PostCard = (postData: postDataSchema) => {
+    const posPrmptArray = postData.posPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
+    const negPrmptArray = postData.negPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
+
+    const Prm2Clipboard = async (e: any) => {
+        let text = e.target.id
+
+        try {
+            if ('clipboard' in navigator) {
+                await navigator.clipboard.writeText(text)
+                toast("Successfully copied to clipboard!")
+            } else {
+                toast("Your browser doesn't support clipboard!")
+                return
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <Dialog>
-        <DialogTrigger asChild>
-        <div className="border border-stone-700 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
-            <Carousel className="w-full p-0 items-center justify-center">
-                {postData.url.map((imageSRC, index) => (
-                    <CarouselItem className="w-full h-full p-0" key={index}>
+            <div className="max-w-screen-xl h-9/10">
+                <DialogTrigger asChild>
+                    <div className="relative border border-stone-700 w-full p-0 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
                         <div className="flex items-center justify-center">
-                            <Image className="w-full block h-full rounded-md" src={imageSRC} objectFit="contain" layout="cover" sizes="100vw" width={350} height={0} alt=""/>
+                            <Image className="w-full block h-full rounded-md" src={postData.url[0]} objectFit="contain" layout="cover" sizes="100vw" width={350} height={0} alt=""/>
                         </div>
-                    </CarouselItem>
-                ))}
-                <div className="absolute bottom-0 left-0 right-0 flex bg-gradient-to-b rounded-md 
-                from-transparent to-stone-900 flex-col justify-center items-start p-4 align-top">
-                    <Label className="font-bold text-xl">{postData.title}</Label>
-                    <Label className="py-2">{postData.createdAt}</Label>
-                    <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button className="bg-indigo-600 text-gray-200">Copy</Button>
-                    </DropdownMenuTrigger>
-                        <DropdownMenuContent className="">
-                            <DropdownMenuItem onClick={() => {Copy2Clipboard(postData.posPrompt)}}>Copy Positive Prompt</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => {Copy2Clipboard(postData.negPrompt)}}>Copy Negative Prompt</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-                <CarouselPrevious className="left-2 opacity-0 hover:opacity-100 transition-all" />
-                <CarouselNext className="right-2 opacity-0 hover:opacity-100 transition-all" />
-            </Carousel>
-        </div>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-                <DialogTitle>{postData.title}</DialogTitle>
-            <DialogDescription>
-            <Carousel className="w-full p-0 items-center justify-center">
-                {postData.url.map((imageSRC, index) => (
-                    <CarouselItem className="w-full h-full p-0" key={index}>
-                        <div className="flex items-center justify-center">
-                            <Image className="w-full block h-full rounded-md" src={imageSRC} objectFit="contain" layout="cover" sizes="100vw" width={350} height={0} alt=""/>
+                        <div className="absolute bottom-0 right-0 left-0 flex bg-gradient-to-b rounded-md 
+                        from-transparent to-stone-900 flex-col justify-center items-start p-4 align-top">
+                            <Label className="font-bold text-lg">{postData.title}</Label>
                         </div>
-                    </CarouselItem>
-                ))}
-                <CarouselPrevious className="left-0 h-full opacity-0 rounded-none hover:opacity-100 transition-all" />
-                <CarouselNext className="right-0 h-full opacity-0 rounded-none hover:opacity-100 transition-all" />
-            </Carousel>
-            </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-                <div className="rounded-md border-stone-700 border p-2">
-                    <p className="text-sm font-light">{postData.posPrompt}</p>
-                </div>
-                <div className="rounded-md border-stone-700 border p-2">
-                    <p className="text-sm font-light">{postData.negPrompt}</p>
-                </div>
+                    </div>
+                </DialogTrigger>
+                <DialogContent className="max-w-screen-xl h-9/10 flex">
+                    <Carousel className="">
+                        <CarouselContent>
+                            {postData.url.map((imageSRC, index) => (
+                                <CarouselItem style={{display:'flex', justifyContent:"center"}} className="" key={index}>
+                                    <Image className="justify-self-center rounded-md border h-full" src={imageSRC} width={0} height={0} sizes="100vw" style={{  height: '88%', width: 'auto' }}  alt=""/>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        
+                        <CarouselPrevious className="left-1 opacity-0 shadow-lg bg-black hover:opacity-80 transition-all" />
+                        <CarouselNext className="right-1 opacity-0 shadow-lg bg-black hover:opacity-80 transition-all" />
+                    </Carousel>
+                    <div className="w-full flex-col p-3">
+                        <div className="rounded-md border -mt-3 mb-2">
+                            <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md font-medium"><p className="font-thin">Prompt</p></div>
+                            <div className="p-2">
+                                <p className="text-xs opacity-50 mb-1">Positive</p>
+                                <ScrollArea className="h-[100px]">
+                                    <Grid container spacing={0.5}>
+                                        {posPrmptArray.map((item) => (
+                                            <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
+                                        ))}
+                                    </Grid>
+                                </ScrollArea>
+                                <div className="w-full h-[1px] bg-stone-800 my-1" />
+                                <p className="text-xs opacity-50 mb-1">Negative</p>
+                                <ScrollArea className="h-[100px]">
+                                    <Grid container spacing={0.5}>
+                                        {negPrmptArray.map((item) => (
+                                            <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
+                                        ))}
+                                    </Grid>
+                                </ScrollArea>
+                            </div>
+                        </div>
+                        <div className="rounded-md border mt-2 flex flex-col">
+                            <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md font-medium"><p className="font-thin">Details</p></div>
+                            <div className="px-2">
+                                <div className="py-2 flex justify-between">
+                                    <p className="text-sm font-light">Model</p>
+                                    <div className="border rounded-md px-10 bg-neutral-800">
+                                        <p className="text-sm font-light">{postData.model}</p>
+                                    </div>
+                                </div>
+
+                                <div className="w-full h-[1px] bg-stone-800" />
+
+                                <div className="py-2 flex justify-between">
+                                    <p className="text-sm font-light">Sampler</p>
+                                    <div className="border rounded-md px-10 bg-neutral-800">
+                                        <p className="text-sm font-light">{postData.sampler}</p>
+                                    </div>
+                                </div>
+
+                                <div className="w-full h-[1px] bg-stone-800" />
+
+                                <div className="py-2 flex justify-between">
+                                    <p className="text-sm font-light">Stable Diffusion Version</p>
+                                    <div className="border rounded-md px-10 bg-neutral-800">
+                                        <p className="text-sm font-light">{postData.sdVersion}</p>
+                                    </div>
+                                </div>
+
+                                <div className="w-full h-[1px] bg-stone-800" />
+
+                                <div className="py-2 flex justify-between">
+                                    <p className="text-sm font-light">Posted on</p>
+                                    <div className="border rounded-md px-10 bg-neutral-800">
+                                        <p className="text-sm font-light">{postData.createdAt}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="w-full flex mt-2 justify-between">
+                            <Button id={postData.posPrompt} onClick={Prm2Clipboard} className="flex w-full rounded-r-none opacity-90" >Copy Positive</Button>
+                            <Button id={postData.negPrompt} onClick={Prm2Clipboard} className="w-full rounded-l-none bg-rose-200 opacity-80" >Copy Negative</Button>
+                        </div>
+                        <div>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <div className="border shadow-lg bg-stone-900 rounded-full w-6 h-6 absolute bottom-6 right-8">
+                                    <FaTrash className=" text-red-500 text-sm m-0 absolute bottom-1 right-1 opacity-50" />
+                                </div>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will permanently delete your post from our servers.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={delPost} id = {postData.id}>Continue</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                        </div>
+                    </div>
+                </DialogContent>
             </div>
-            <DialogFooter>
-                <div className="w-full flex justify-between">
-                    <Button className="flex w-full rounded-r-none bg-violet-300" >Copy Positive</Button>
-                    <Button className="w-full rounded-l-none bg-rose-300" >Copy Negative</Button>
-                </div>
-            </DialogFooter>
-        </DialogContent>
         </Dialog>
     )
 }

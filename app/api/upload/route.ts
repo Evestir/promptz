@@ -12,13 +12,16 @@ export async function POST(req: Request) {
       title: body.title,
       posPrompt: body.posPrompt,
       negPrompt: body.negPrompt,
+      model: body.model,
+      sampler: body.sampler,
+      sdVersion: body.sdVersion,
     },
   }).then((e) => {
     console.log(e)
-    NextResponse.json(e, {status: 200})
+    return NextResponse.json(e, {status: 200})
   }).catch((e) => {
     console.log(e)
-    return NextResponse.json({ message: "Internal Error"}, {status: 500})
+    return new NextResponse(JSON.stringify({ message: "Internal Error"}), {status: 500})
   })
 }
 

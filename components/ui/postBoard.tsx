@@ -5,16 +5,7 @@ import axios from "axios";
 import PostCard from "./postCard";
 import { downloadPosts } from "@/app/libs/data";
 import { pages } from "next/dist/build/templates/app-page";
-
-interface postDataSchema {
-    id: string;
-    url: string[];
-    title: string;
-    posPrompt: string;
-    negPrompt: string;
-    view: number;
-    createdAt: any;
-}
+import { postDataSchema } from "@/app/libs/interfaces";
 
 const PostBoard = () => {
     const [posts, setPosts] = useState<postDataSchema[]>([])
@@ -66,7 +57,7 @@ const PostBoard = () => {
         <div className="grid grid-cols-5 grid-flow-row gap-4">
             {posts.map(post => {
              return <div key={post.id} className="m-0">
-                    <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt}/>
+                    <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt} model={post.model} sampler={post.sampler} sdVersion={post.sdVersion}/>
                 </div>
             })}
             <div ref={observerTarget}></div>

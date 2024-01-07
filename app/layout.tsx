@@ -4,6 +4,8 @@ import './globals.css'
 import { ThemeProvider } from "@/components/ui/theme-provider"
 import NavBar from '@/components/ui/navigation-bar'
 import Image from 'next/image'
+import { Toaster } from "@/components/ui/sonner"
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,11 +22,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <NavBar />
-          {children}
-          <Image src={"https://appstorrent.ru/templates/appstorrent-25c9c1746c/assets/img/bg.webp"} alt='' className="w-full opacity-10 blur-sm -z-50" fill/>
-        </ThemeProvider>
+        <AppRouterCacheProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+            <NavBar />
+            {children}
+            <Image src={"https://appstorrent.ru/templates/appstorrent-25c9c1746c/assets/img/bg.webp"} alt='' className="w-full opacity-10 blur-sm -z-50" fill/>
+            <Toaster />
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   )
