@@ -12,6 +12,7 @@ import { toast } from "sonner"
 import { ScrollArea } from "./scroll-area"
 import Grid from '@mui/material/Grid'
 import UseEmblaCarousel  from "embla-carousel-react"
+import styles from "@/app/styles/styles.module.css"
 
 const delPost = async (e:any) => {
     const postData = {
@@ -53,7 +54,7 @@ const PostCard = (postData: postDataSchema) => {
                 <DialogTrigger asChild>
                     <div className="relative border border-stone-700 w-full p-0 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
                         <div className="flex items-center justify-center">
-                            <Image className="w-full block h-full rounded-md" src={postData.url[0]} objectFit="contain" layout="cover" sizes="100vw" width={350} height={0} alt=""/>
+                            <Image className="w-full block h-full rounded-md" src={postData.url[0]} sizes="100vw" width={350} height={0} alt=""/>
                         </div>
                         <div className="absolute bottom-0 right-0 left-0 flex bg-gradient-to-b rounded-md 
                         from-transparent to-stone-900 flex-col justify-center items-start p-4 align-top">
@@ -61,42 +62,46 @@ const PostCard = (postData: postDataSchema) => {
                         </div>
                     </div>
                 </DialogTrigger>
-                <DialogContent className="md:flex h-9/10 flex justify-between w-full border-4 border-red-600" style={{maxWidth: '90%'}}>
-                    <div className="embla overflow-hidden" ref={emblaRef} style={{maxWidth: '65%'}}>
+                <DialogContent className={`${styles.shadow} rounded-lg lg:flex h-9/10 justify-between w-full bg-gradient-to-br from-stone-900 via-transparent to-neutral-900 p-0`} style={{transformStyle: "preserve-3d", maxWidth: '80%'}}>
+                    <div className="embla justify-center flex w-full lg:ml-4 overflow-hidden" ref={emblaRef} >
                         <div className="embla_container w-full h-full flex">
                             {postData.url.map((imageSRC ) => (
-                                <div className="embla_slide w-full h-full min-w-0  flex justify-center" style={{ flex: '0 0 auto'}}>
-                                    <Image className="drop-shadow-[0_10px_10px_rgba(255,255,255,0.5)] rounded-lg border-2 w-full" src={imageSRC} width={0} height={0} sizes="100vw" objectFit="contain" style={{  height: '100%', width: 'auto' }} alt=""/>
+                                <div className="embla_slide w-full h-full min-w-0 flex items-center justify-center" style={{ flex: '0 0 auto'}}>
+                                    <Image className="drop-shadow-lg border lg:rounded-none rounded-lg lg:m-0 mt-6 lg:border-x-2 w-full" src={imageSRC} width={0} height={0} sizes="100vw" style={{ objectFit: 'cover' , height: '100%', width: 'auto' }} alt=""/>
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <ScrollArea className="max-w-lg w-full border-4">
+                    <ScrollArea className="max-w-lg border-l bg-gradient-to-br rounded-r-lg from-slate-900 via-transparent to-stone-900 w-full p-6">
                     <div className="flex-col p-3 " >
-                        <div className="rounded-md border -mt-3 mb-2">
-                            <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md font-medium"><p className="font-thin">Prompt</p></div>
+                        <div className="rounded-md border -mt-3 mb-2 bg-neutral-900 bg-opacity-70">
+                            <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md font-medium border-b"><p className="font-thin">Prompt</p></div>
                             <div className="p-2">
                                 <p className="text-xs opacity-50 mb-1">Positive</p>
-                                <ScrollArea className="h-[100px]">
-                                    <Grid container spacing={0.5}>
-                                        {posPrmptArray.map((item) => (
-                                            <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
-                                        ))}
-                                    </Grid>
+                                <ScrollArea>
+                                    <div className="max-h-[200px]">
+                                        <Grid container spacing={0.5}>
+                                            {posPrmptArray.map((item) => (
+                                                <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
+                                            ))}
+                                        </Grid>
+                                    </div>
                                 </ScrollArea>
                                 <div className="w-full h-[1px] bg-stone-800 my-1" />
                                 <p className="text-xs opacity-50 mb-1">Negative</p>
-                                <ScrollArea className="h-[100px]">
-                                    <Grid container spacing={0.5}>
-                                        {negPrmptArray.map((item) => (
-                                            <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
-                                        ))}
-                                    </Grid>
+                                <ScrollArea>
+                                    <div className="max-h-[200px]">
+                                        <Grid container spacing={0.5}>
+                                            {negPrmptArray.map((item) => (
+                                                <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
+                                            ))}
+                                        </Grid>
+                                    </div>
                                 </ScrollArea>
                             </div>
                         </div>
-                        <div className="rounded-md border mt-2 flex flex-col">
-                            <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md font-medium"><p className="font-thin">Details</p></div>
+                        <div className="rounded-md border mt-2 flex bg-neutral-900 bg-opacity-70 flex-col">
+                            <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md border-b font-medium"><p className="font-thin">Details</p></div>
                             <div className="px-2">
                                 <div className="py-2 flex justify-between">
                                     <p className="text-sm font-light">Model</p>

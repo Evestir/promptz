@@ -1,0 +1,21 @@
+.shadow:before {
+    content:"";
+    position: absolute;
+    inset: 0px;
+    transform: translate(0px,0px);
+    z-index: -1;
+    background: conic-gradient(from 90deg at 40% -25%, #ffd700, #f79d03, #ee6907, #e6390a, #de0d0d, #d61039, #cf1261, #c71585, #cf1261, #d61039, #de0d0d, #ee6907, #f79d03, #ffd700, #ffd700, #ffd700);
+    filter: blur(16px);
+}
+
+.shadow::after {
+    border-radius: 8px;
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    /* Inherit all the decorations defined on the main element */
+    background: inherit;
+    border: inherit;
+    box-shadow: inherit;
+}

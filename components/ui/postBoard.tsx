@@ -6,23 +6,28 @@ import PostCard from "./postCard";
 import { downloadPosts } from "@/app/libs/data";
 import { pages } from "next/dist/build/templates/app-page";
 import { postDataSchema } from "@/app/libs/interfaces";
+import Grid from '@mui/material/Grid'
+import ImageList from '@mui/material/ImageList'
+import ImageListItem from '@mui/material/ImageListItem'
 
 const PostBoard = () => {
     const [posts, setPosts] = useState<postDataSchema[]>([])
     const [isLoading, setIsLoading] = useState(false)
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState<number>(0)
 
     const loadMorePosts = async () => {
         setIsLoading(true)
 
+        console.log(`Current page: ${page}`)
+
         const postData = {
-            page: 0,
+            page: page,
         }
         postData.page = page
         const newPosts = await downloadPosts(postData)
         console.log(newPosts)
         setPosts([...posts, ...newPosts])
-        setPage(page + 1)
+        setPage(prevPage => prevPage + 1)
         setIsLoading(false)
     }
 
@@ -54,14 +59,14 @@ const PostBoard = () => {
     }, [observerTarget])
 
     return (
-        <div className="grid grid-cols-5 grid-flow-row gap-4">
+        <ImageList variant="masonry" cols={3} gap={18} className="h-full w-full">
             {posts.map(post => {
-             return <div key={post.id} className="m-0">
+             return <ImageListItem key={post.id} className="m-0">
                     <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt} model={post.model} sampler={post.sampler} sdVersion={post.sdVersion}/>
-                </div>
+                </ImageListItem>
             })}
             <div ref={observerTarget}></div>
-        </div>
+        </ImageList>
     )
 }
 
