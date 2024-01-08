@@ -10,8 +10,8 @@ export async function POST(req: Request) {
   console.log(body.page)
 
   const res = await prisma.post.findMany({
-    take: 20, // Retrieves the last 10 posts
-    skip: body.page || 0 * 20,
+    take: 15, // Retrieves the last 10 posts
+    skip: parseInt(body.page) * 15,
     orderBy: {
       createdAt: 'desc', 
     },

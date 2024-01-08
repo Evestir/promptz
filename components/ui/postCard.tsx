@@ -51,8 +51,8 @@ const PostCard = (postData: postDataSchema) => {
     return (
         <Dialog>
             <div>
-                <DialogTrigger asChild>
-                    <div className="relative border border-stone-700 w-full p-0 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
+                <DialogTrigger asChild className="md:p-0">
+                    <div className="relative border border-stone-700 w-full p-0 rounded-md md:w-[300px] justify-center items-center">
                         <div className="flex items-center justify-center">
                             <Image className="w-full block h-full rounded-md" src={postData.url[0]} sizes="100vw" width={350} height={0} alt=""/>
                         </div>
