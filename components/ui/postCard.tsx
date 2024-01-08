@@ -66,7 +66,7 @@ const PostCard = (postData: postDataSchema) => {
                     <div className="embla justify-center flex w-full lg:ml-4 overflow-hidden" ref={emblaRef} >
                         <div className="embla_container w-full h-full flex">
                             {postData.url.map((imageSRC ) => (
-                                <div className="embla_slide w-full h-full min-w-0 flex items-center justify-center" style={{ flex: '0 0 auto'}}>
+                                <div key={imageSRC} className="embla_slide w-full h-full min-w-0 flex items-center justify-center" style={{ flex: '0 0 auto'}}>
                                     <Image className="drop-shadow-lg border lg:rounded-none rounded-lg lg:m-0 mt-6 lg:border-x-2 w-full" src={imageSRC} width={0} height={0} sizes="100vw" style={{ objectFit: 'cover' , height: '100%', width: 'auto' }} alt=""/>
                                 </div>
                             ))}
@@ -82,7 +82,7 @@ const PostCard = (postData: postDataSchema) => {
                                     <div className="max-h-[200px]">
                                         <Grid container spacing={0.5}>
                                             {posPrmptArray.map((item) => (
-                                                <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
+                                                <Grid key={item} item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
                                             ))}
                                         </Grid>
                                     </div>
@@ -93,7 +93,7 @@ const PostCard = (postData: postDataSchema) => {
                                     <div className="max-h-[200px]">
                                         <Grid container spacing={0.5}>
                                             {negPrmptArray.map((item) => (
-                                                <Grid item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
+                                                <Grid key={item} item><div className="border text-center rounded-sm overflow-hidden bg-stone-900 text-xs p-1">{item}</div></Grid>
                                             ))}
                                         </Grid>
                                     </div>
