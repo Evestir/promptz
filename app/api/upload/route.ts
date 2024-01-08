@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     },
   }).then((e) => {
     console.log(e)
-    return NextResponse.json(e, {status: 200})
+    return new NextResponse(JSON.stringify(e), {status: 200})
   }).catch((e) => {
     console.log(e)
     return new NextResponse(JSON.stringify({ message: "Internal Error"}), {status: 500})

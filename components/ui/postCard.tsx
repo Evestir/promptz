@@ -1,4 +1,4 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import Carousel from "@/components/ui/my-carousel"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Label } from "./label"
@@ -11,6 +11,7 @@ import { redirect } from "next/navigation"
 import { toast } from "sonner"
 import { ScrollArea } from "./scroll-area"
 import Grid from '@mui/material/Grid'
+import UseEmblaCarousel  from "embla-carousel-react"
 
 const delPost = async (e:any) => {
     const postData = {
@@ -26,6 +27,7 @@ const delPost = async (e:any) => {
 }
 
 const PostCard = (postData: postDataSchema) => {
+    const [emblaRef] = UseEmblaCarousel()
     const posPrmptArray = postData.posPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
     const negPrmptArray = postData.negPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
 
@@ -47,7 +49,7 @@ const PostCard = (postData: postDataSchema) => {
 
     return (
         <Dialog>
-            <div className="max-w-screen-xl h-9/10">
+            <div>
                 <DialogTrigger asChild>
                     <div className="relative border border-stone-700 w-full p-0 rounded-md lg:w-[300px] sm:w-max md:w-max justify-center items-center">
                         <div className="flex items-center justify-center">
@@ -59,20 +61,18 @@ const PostCard = (postData: postDataSchema) => {
                         </div>
                     </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-screen-xl h-9/10 flex">
-                    <Carousel className="">
-                        <CarouselContent>
-                            {postData.url.map((imageSRC, index) => (
-                                <CarouselItem style={{display:'flex', justifyContent:"center"}} className="" key={index}>
-                                    <Image className="justify-self-center rounded-md border h-full" src={imageSRC} width={0} height={0} sizes="100vw" style={{  height: '88%', width: 'auto' }}  alt=""/>
-                                </CarouselItem>
+                <DialogContent className="md:flex h-9/10 flex justify-between w-full border-4 border-red-600" style={{maxWidth: '90%'}}>
+                    <div className="embla overflow-hidden" ref={emblaRef} style={{maxWidth: '65%'}}>
+                        <div className="embla_container w-full h-full flex">
+                            {postData.url.map((imageSRC ) => (
+                                <div className="embla_slide w-full h-full min-w-0  flex justify-center" style={{ flex: '0 0 auto'}}>
+                                    <Image className="drop-shadow-[0_10px_10px_rgba(255,255,255,0.5)] rounded-lg border-2 w-full" src={imageSRC} width={0} height={0} sizes="100vw" objectFit="contain" style={{  height: '100%', width: 'auto' }} alt=""/>
+                                </div>
                             ))}
-                        </CarouselContent>
-                        
-                        <CarouselPrevious className="left-1 opacity-0 shadow-lg bg-black hover:opacity-80 transition-all" />
-                        <CarouselNext className="right-1 opacity-0 shadow-lg bg-black hover:opacity-80 transition-all" />
-                    </Carousel>
-                    <div className="w-full flex-col p-3">
+                        </div>
+                    </div>
+                    <ScrollArea className="max-w-lg w-full border-4">
+                    <div className="flex-col p-3 " >
                         <div className="rounded-md border -mt-3 mb-2">
                             <div className="w-full h-full bg-neutral-900 p-2 rounded-t-md font-medium"><p className="font-thin">Prompt</p></div>
                             <div className="p-2">
@@ -131,18 +131,16 @@ const PostCard = (postData: postDataSchema) => {
                                         <p className="text-sm font-light">{postData.createdAt}</p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div className="w-full flex mt-2 justify-between">
                             <Button id={postData.posPrompt} onClick={Prm2Clipboard} className="flex w-full rounded-r-none opacity-90" >Copy Positive</Button>
                             <Button id={postData.negPrompt} onClick={Prm2Clipboard} className="w-full rounded-l-none bg-rose-200 opacity-80" >Copy Negative</Button>
                         </div>
-                        <div>
                         <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <div className="border shadow-lg bg-stone-900 rounded-full w-6 h-6 absolute bottom-6 right-8">
-                                    <FaTrash className=" text-red-500 text-sm m-0 absolute bottom-1 right-1 opacity-50" />
+                            <AlertDialogTrigger asChild className="flex justify-end w-full">
+                                <div className="">
+                                    <FaTrash size={22} className=" text-red-500 text-sm opacity-50 bg-stone-900 rounded-full border m-2 mt-4 hover:opacity-100 hover:border-4 transition-all cursor-pointer" />
                                 </div>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
@@ -158,8 +156,8 @@ const PostCard = (postData: postDataSchema) => {
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-                        </div>
                     </div>
+                    </ScrollArea>
                 </DialogContent>
             </div>
         </Dialog>
