@@ -13,6 +13,8 @@ import { ScrollArea } from "./scroll-area"
 import Grid from '@mui/material/Grid'
 import UseEmblaCarousel  from "embla-carousel-react"
 import styles from "@/app/styles/styles.module.css"
+import { randomInt } from "crypto"
+import { useEffect, useState } from "react"
 
 const delPost = async (e:any) => {
     const postData = {
@@ -28,9 +30,29 @@ const delPost = async (e:any) => {
 }
 
 const PostCard = (postData: postDataSchema) => {
+    const id = Math.random().toString()
+    const [rY, setrY] = useState(0)
+    const [rX, setrX] = useState(0)
     const [emblaRef] = UseEmblaCarousel()
     const posPrmptArray = postData.posPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
     const negPrmptArray = postData.negPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
+
+    useEffect(() => {
+        const container = document.getElementById(id)
+        container?.addEventListener('mousemove', function(e) {
+            const x = e.offsetX
+            const y = e.offsetY
+            const a = Math.round((x / container.offsetWidth) * 10) / 10;
+            const b = Math.round((y / container.offsetHeight) * 10) / 10;
+
+            setrY(-20 * a + 10)
+            setrX(-20 * b + 10)
+        })   
+        container?.addEventListener('mouseleave', function(e) {
+            setrX(0)
+            setrY(0)
+        }) 
+    }, [id])
 
     const Prm2Clipboard = async (e: any) => {
         let text = e.target.id
@@ -51,12 +73,12 @@ const PostCard = (postData: postDataSchema) => {
     return (
         <Dialog>
             <div>
-                <DialogTrigger asChild className="md:p-0">
-                    <div className="relative border border-stone-700 w-full p-0 rounded-md md:w-[300px] justify-center items-center">
+                <DialogTrigger style={{ transform: `perspective(500px) rotateX(${rX}deg) rotateY(${rY}deg)`}} id={id} asChild className="ease-out transition-transform p-0">
+                    <div className="relative border w-full p-0 rounded-md justify-center items-center">
                         <div className="flex items-center justify-center">
-                            <Image className="w-full block h-full rounded-md" src={postData.url[0]} sizes="100vw" width={350} height={0} alt=""/>
+                            <Image className="w-full block h-full rounded-md" src={postData.url[0]} sizes="100vw" width={0} height={0} alt=""/>
                         </div>
-                        <div className="absolute bottom-0 right-0 left-0 flex bg-gradient-to-b rounded-md 
+                        <div className="pointer-events-none absolute bottom-0 right-0 left-0 flex bg-gradient-to-b rounded-md 
                         from-transparent to-stone-900 flex-col justify-center items-start p-4 align-top">
                             <Label className="font-bold text-lg">{postData.title}</Label>
                         </div>

@@ -34,8 +34,8 @@ const PostBoard = () => {
     const observerTarget = useRef(null);
 
     const calcCols = (wWidth: any) => {
-        const maxCols = Math.ceil(wWidth/500)
-        if (maxCols < 2) {
+        const maxCols = Math.ceil(wWidth/400)
+        if (maxCols < 3) {
             return 1
         }
         return maxCols
@@ -77,13 +77,13 @@ const PostBoard = () => {
     }, [observerTarget.current])
 
     return (
-        <div className="justify-center w-full items-center flex flex-col">
+        <div className={`justify-center w-full h-full items-center flex ${cols === 1 ? 'px-0' : 'px-8'} flex-col`}>
             <ImageList variant="masonry" cols={cols} gap={18} className="h-full w-full">
                 {posts.map(post => (
-                        <ImageListItem key={post.id} className="m-0">
-                            <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt} model={post.model} sampler={post.sampler} sdVersion={post.sdVersion}/>
-                        </ImageListItem>
-                    ))}
+                    <ImageListItem key={post.id} className="m-0 p-0 w-full h-full">
+                        <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt} model={post.model} sampler={post.sampler} sdVersion={post.sdVersion}/>
+                    </ImageListItem>
+                ))}
             </ImageList>
             <Loader2 size={30} opacity={isLoading ? 1 : 0} className={`animate-spin transition-all mt-20 mb-5`} ref={observerTarget}></Loader2>
         </div>

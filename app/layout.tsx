@@ -21,12 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} style={{background: '#121212'}}>
         <AppRouterCacheProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <NavBar />
             {children}
-            <Image src={"https://appstorrent.ru/templates/appstorrent-25c9c1746c/assets/img/bg.webp"} alt='' className="w-full opacity-10 blur-sm -z-50" fill/>
             <Toaster />
           </ThemeProvider>
         </AppRouterCacheProvider>
