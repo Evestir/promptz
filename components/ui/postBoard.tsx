@@ -85,7 +85,7 @@ const PostBoard = () => {
                     </ImageListItem>
                 ))}
             </ImageList>
-            <Loader2 size={30} opacity={isLoading ? 1 : 0} className={`animate-spin transition-all mt-20 mb-5`} ref={observerTarget}></Loader2>
+            <Loader2 size={30} opacity={isLoading ? 1 : 0} className={`animate-spin transition-all mt-10 mb-5`} ref={observerTarget}></Loader2>
         </div>
 
     )
