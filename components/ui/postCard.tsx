@@ -7,7 +7,7 @@ import { postDataSchema } from "@/app/libs/interfaces"
 import { FaTrash } from "react-icons/fa"
 import { deletePost } from "@/app/libs/data"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./alert-dialog"
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { ScrollArea } from "./scroll-area"
 import Grid from '@mui/material/Grid'
@@ -16,26 +16,29 @@ import styles from "@/app/styles/styles.module.css"
 import { randomInt } from "crypto"
 import { useEffect, useState } from "react"
 
-const delPost = async (e:any) => {
-    const postData = {
-        id: e.target.id
-    }
-
-    const deletedPost = await deletePost(postData)
-    console.log(deletedPost)
-
-    if (deletedPost.message === "Successfully deleted an item.") {
-        redirect("/")
-    }
-}
 
 const PostCard = (postData: postDataSchema) => {
+    const router = useRouter()
+
     const id = Math.random().toString()
     const [rY, setrY] = useState(0)
     const [rX, setrX] = useState(0)
     const [emblaRef] = UseEmblaCarousel()
     const posPrmptArray = postData.posPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
     const negPrmptArray = postData.negPrompt.split(',').filter(item => item !== null).filter(item => item !== "")
+
+    const delPost = async (e:any) => {
+        const postData = {
+            id: e.target.id
+        }
+    
+        const deletedPost = await deletePost(postData)
+        console.log(deletedPost)
+    
+        if (deletedPost.message === "Successfully deleted an item.") {
+            router.refresh()
+        }
+    }
 
     useEffect(() => {
         const container = document.getElementById(id)

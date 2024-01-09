@@ -18,6 +18,7 @@ import { samplers } from "@/app/libs/samplerList"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./command"
 import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "./scroll-area"
+import { useRouter } from "next/navigation"
 
 const sdVersionList = [
     "SD 1.5",
@@ -54,6 +55,8 @@ const postData: postDataSchema = {
 const urlStrings:string[] = []
 
 const PostForm = () => {
+    const router = useRouter()
+
     const [image, setFile] = useState<File>()
     const [imageNames, setImageNames] = useState([""])
     const [isLoading, setIsLoading] = useState(false)
@@ -112,7 +115,13 @@ const PostForm = () => {
             return
         }
 
-        upload2Api(postData).finally(() => {setIsLoading(false)})
+        const result = await upload2Api(postData).finally(() => {setIsLoading(false)})
+        if (result.message === "Successfully submitted your form!") {
+            toast("Successfully uploaded your post!", {
+                description: postData.title
+            })
+            router.refresh()
+        }
     }
 
     const form = useForm<z.infer<typeof formSchema>>({

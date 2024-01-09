@@ -29,17 +29,18 @@ import { Button } from "./button";
 import PostForm from "./postForm";
 import Image from "next/image";
 import styles from "@/app/styles/styles.module.css"
+import Link from "next/link";
 
 const NavBar = () => {
     return (
         <div className="w-full fixed z-50">
             <div className="w-full h-[60px] opacity-55 absolute bg-neutral-900"></div>
             <div className="border-b justify-between backdrop-blur-md h-[60px] bg-opacity-80 flex w-full border-opacity-70 border-stone-800">
-                <div className="flex ml-10 justify-start items-center">
+                <Link href={'/'} className="flex ml-10 justify-start items-center">
                     <Image src='/PLogoG.png' className="mt-4" sizes="100vw" width={80} height={80} alt='' />
                     <p className="-ml-2 text-stone-200 text-2xl font-medium">rom</p>
                     <p className="text-stone-500 text-2xl font-medium">ptz</p>
-                </div>
+                </Link>
                 <AlertDialog>
                 <NavigationMenu className="mr-28 justify-end">
                     <NavigationMenuList>

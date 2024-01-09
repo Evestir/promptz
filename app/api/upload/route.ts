@@ -23,6 +23,8 @@ export async function POST(req: Request) {
     console.log(e)
     return new NextResponse(JSON.stringify({ message: "Internal Error"}), {status: 500})
   })
+  
+  return new NextResponse(JSON.stringify({ message : 'Successfully submitted your form!'}), {status: 200})
 }
 
 export async function GET(req: Request) {

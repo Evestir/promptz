@@ -1,8 +1,10 @@
 export async function upload2Api(params: any) {
-    await fetch('/api/upload', {
+    const result = await fetch('/api/upload', {
         method: 'POST',
         body: JSON.stringify(params),
     })
+
+    return await result.json()
 }
 
 export async function deletePost(params:any) {

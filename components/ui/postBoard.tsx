@@ -46,10 +46,6 @@ const PostBoard = () => {
     }
 
     useEffect(() => {
-        loadMorePosts()
-    }, [])
-
-    useEffect(() => {
         window.addEventListener('resize', handleResize)
         setCols(calcCols(window.innerWidth))
     }, [])
