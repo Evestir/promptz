@@ -33,7 +33,7 @@ const PostBoard = () => {
 
     const observerTarget = useRef(null);
 
-    const calcCols = (wWidth: any) => {
+    const calcCols = (wWidth: number) => {
         const maxCols = Math.ceil(wWidth/400)
         if (maxCols < 3) {
             return 1
@@ -77,8 +77,8 @@ const PostBoard = () => {
     }, [observerTarget.current])
 
     return (
-        <div className={`justify-center w-full h-full items-center flex ${cols === 1 ? 'px-0' : 'px-8'} flex-col`}>
-            <ImageList variant="masonry" cols={cols} gap={18} className="h-full w-full">
+        <div className={`justify-center w-full h-full flex ${cols === 1 ? 'px-0' : 'px-8'} flex-col`}>
+            <ImageList variant="masonry" cols={cols} gap={0} className="h-full w-full scrollbar-hide">
                 {posts.map(post => (
                     <ImageListItem key={post.id} className="m-0 p-0 w-full h-full">
                         <PostCard createdAt={post.createdAt} url={post.url} id={post.id} view={post.view} title={post.title} posPrompt={post.posPrompt} negPrompt={post.negPrompt} model={post.model} sampler={post.sampler} sdVersion={post.sdVersion}/>

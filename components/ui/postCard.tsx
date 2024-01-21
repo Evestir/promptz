@@ -75,8 +75,8 @@ const PostCard = (postData: postDataSchema) => {
 
     return (
         <Dialog>
-            <div>
-                <DialogTrigger style={{ transform: `perspective(500px) rotateX(${rX}deg) rotateY(${rY}deg)`}} id={id} asChild className="ease-out transition-transform p-0">
+            <div className="p-4">
+                <DialogTrigger style={{ transform: `perspective(500px) rotateX(${rX}deg) rotateY(${rY}deg)`}} id={id} asChild className="ease-out transition-transform duration-500 p-0">
                     <div className="relative border w-full p-0 rounded-md justify-center items-center">
                         <div className="flex items-center justify-center">
                             <Image className="w-full block h-full rounded-md" src={postData.url[0]} sizes="100vw" width={0} height={0} alt=""/>
