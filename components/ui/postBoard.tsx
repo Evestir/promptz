@@ -77,7 +77,7 @@ const PostBoard = () => {
     }, [observerTarget.current])
 
     return (
-        <div className={`justify-center w-full h-full flex ${cols === 1 ? 'px-0' : 'px-8'} flex-col`}>
+        <div className={`justify-center w-full h-full flex flex-col`}>
             <ImageList variant="masonry" cols={cols} gap={0} className="h-full w-full scrollbar-hide">
                 {posts.map(post => (
                     <ImageListItem key={post.id} className="m-0 p-0 w-full h-full">
@@ -85,7 +85,7 @@ const PostBoard = () => {
                     </ImageListItem>
                 ))}
             </ImageList>
-            <Loader2 size={30} opacity={isLoading ? 1 : 0} className={`animate-spin transition-all mt-20 mb-5`} ref={observerTarget}></Loader2>
+            <Loader2 size={30} opacity={isLoading ? 1 : 0} className={`animate-spin transition-all px-8 mt-20 mb-5`} ref={observerTarget}></Loader2>
         </div>
 
     )
