@@ -77,7 +77,7 @@ const PostBoard = () => {
     }, [observerTarget.current])
 
     return (
-        <div className={`justify-center w-full h-full flex flex-col`}>
+        <div className={`justify-center w-full h-full flex flex-col items-center`}>
             <ImageList variant="masonry" cols={cols} gap={0} className="h-full w-full scrollbar-hide">
                 {posts.map(post => (
                     <ImageListItem key={post.id} className="m-0 p-0 w-full h-full">

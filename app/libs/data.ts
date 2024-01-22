@@ -41,7 +41,7 @@ const convert = async (source: File, type: string) => {
     return result;
 }
 
-export async function upload2Imgur(params: File) {
+export async function upload2Imgur(params: File, id: string) {
     try {
         const form = new FormData()
 
@@ -58,7 +58,7 @@ export async function upload2Imgur(params: File) {
         const response = await fetch('https://api.imgur.com/3/image', {
             method: 'POST',
             headers: {
-                Authorization: 'Client-ID 3323c16a5b7b123',
+                Authorization: `Client-ID ${id}`,
             },
             body: form,
         })

@@ -18,7 +18,7 @@ import { samplers } from "@/app/libs/samplerList"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./command"
 import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "./scroll-area"
-import { useRouter } from "next/navigation"
+import { useCookies } from "next-client-cookies"
 
 const sdVersionList = [
     "SD 1.5",
@@ -55,7 +55,7 @@ const postData: postDataSchema = {
 const urlStrings:string[] = []
 
 const PostForm = () => {
-    const router = useRouter()
+    const cookies = useCookies()
 
     const [image, setFile] = useState<File>()
     const [imageNames, setImageNames] = useState([""])
@@ -78,7 +78,18 @@ const PostForm = () => {
             return
         }
 
-        const url = await upload2Imgur(params)
+        const ImgurID = cookies.get('ImgurID')
+        if (ImgurID === undefined) {
+            toast("Please set your Imgur ID First!", {
+                description: 'You can set your ID in the profiles menu.'
+            })
+            
+            setIsLoading(false)
+            setDragActive(false)
+            return 
+        }
+
+        const url = await upload2Imgur(params, ImgurID)
         urlStrings.push(url)
 
         setIsLoading(false)
@@ -120,7 +131,7 @@ const PostForm = () => {
             toast("Successfully uploaded your post!", {
                 description: postData.title
             })
-            router.refresh()
+            window.location.reload()
         }
     }
 
@@ -209,7 +220,7 @@ const PostForm = () => {
                         <FormField control={form.control} name="title" render={({field}) => {
                             return <FormItem>
                                 <FormControl>
-                                    <Input className="border-x-0 transition-all border-b-0 border-t rounded-t-none" placeholder="Put your title :>" type="text" {...field} required/>
+                                    <Input className="border-x-0 transition-all border-b-0 border-t rounded-t-none" placeholder="A person who breathes air 😤" type="text" {...field} required/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -298,7 +309,7 @@ const PostForm = () => {
                             </Popover>
                         </div>
                         <div className="rounded-md border-t flex mt-2 justify-between cursor-pointer">
-                            <div className={`opacity-20 bg-white h-[32px] w-[153px] absolute transition-all rounded-md border left-6`} style={{ transform: `translateX(${vIndicatorOffset}px)` }}/>
+                            <div className={`opacity-20 bg-white h-[32px] w-[153px] absolute transition-all ease-in-out duration-500 rounded-md border left-6`} style={{ transform: `translateX(${vIndicatorOffset}px)` }}/>
                             {sdVersionList.map((sdVersionName) => (
                                 <div className="py-1 text-center w-1/3 items-center justify-center" id={sdVersionName} key={sdVersionName} onClick={handleVersionClick}>
                                     {sdVersionName}

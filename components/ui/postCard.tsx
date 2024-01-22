@@ -7,18 +7,15 @@ import { postDataSchema } from "@/app/libs/interfaces"
 import { FaTrash } from "react-icons/fa"
 import { deletePost } from "@/app/libs/data"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./alert-dialog"
-import { redirect, useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { ScrollArea } from "./scroll-area"
 import Grid from '@mui/material/Grid'
 import UseEmblaCarousel  from "embla-carousel-react"
 import styles from "@/app/styles/styles.module.css"
-import { randomInt } from "crypto"
 import { useEffect, useState } from "react"
 
 
 const PostCard = (postData: postDataSchema) => {
-    const router = useRouter()
 
     const id = Math.random().toString()
     const [rY, setrY] = useState(0)
@@ -36,7 +33,7 @@ const PostCard = (postData: postDataSchema) => {
         console.log(deletedPost)
     
         if (deletedPost.message === "Successfully deleted an item.") {
-            router.refresh()
+            window.location.reload()
         }
     }
 
@@ -87,7 +84,7 @@ const PostCard = (postData: postDataSchema) => {
                         </div>
                     </div>
                 </DialogTrigger>
-                <DialogContent className={`${styles.shadow} rounded-lg lg:flex h-9/10 justify-between w-full bg-gradient-to-br from-stone-900 via-transparent to-neutral-900 p-0`} style={{transformStyle: "preserve-3d", maxWidth: '80%'}}>
+                <DialogContent className={`rounded-lg lg:flex h-9/10 justify-between w-full bg-gradient-to-br from-stone-900 via-transparent to-neutral-900 p-0`} style={{transformStyle: "preserve-3d", maxWidth: '80%'}}>
                     <div className="embla justify-center flex w-full lg:ml-4 overflow-hidden" ref={emblaRef} >
                         <div className="embla_container w-full h-full flex">
                             {postData.url.map((imageSRC ) => (
